@@ -185,7 +185,8 @@ export default function ArcigaCleaning() {
     { icon: Home, title: 'Standard Clean', desc: 'Perfect for regular maintenance. Dusting, vacuuming, mopping, and bathroom sanitization.', price: 'From $170' },
     { icon: Sparkles, title: 'Deep Clean', desc: 'Thorough top-to-bottom cleaning. Inside appliances, baseboards, and hard-to-reach areas.', price: 'From $250' },
     { icon: Clock, title: 'Move In/Out', desc: 'Get your deposit back or start fresh. Complete cleaning for transitions.', price: 'From $300' },
-    { icon: Leaf, title: 'Eco-Friendly', desc: 'All-natural, non-toxic products safe for kids, pets, and the planet.', price: 'Add $25' },
+    { icon: Leaf, title: 'Landscaping', desc: 'Professional lawn care, trimming, and yard maintenance to keep your outdoor space pristine.', price: 'From $80' },
+    { icon: Shield, title: 'Deep Clean + Landscaping', desc: 'The complete package! Get a thorough deep clean inside and landscaping outside at a discounted bundle price.', price: 'From $220' },
   ];
 
   const testimonials = [
@@ -489,6 +490,8 @@ export default function ArcigaCleaning() {
                       <option>Standard Clean</option>
                       <option>Deep Clean</option>
                       <option>Move In/Out</option>
+                      <option>Landscaping</option>
+                      <option>Deep Clean + Landscaping Bundle</option>
                       <option>Not sure yet</option>
                     </select>
                   </div>
