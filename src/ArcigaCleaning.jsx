@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { Sparkles, Home, Clock, Shield, Phone, Mail, MapPin, ChevronDown, Star, Check, Leaf, Droplets } from 'lucide-react';
+import { useState, useEffect, useRef } from 'react';
+import { Sparkles, Home, Clock, Shield, Phone, Mail, MapPin, ChevronDown, ChevronLeft, ChevronRight, Star, Check, Leaf, Droplets } from 'lucide-react';
 
 // Custom CSS for animations and fonts
 const styles = `
@@ -72,6 +72,10 @@ const styles = `
     animation-play-state: paused;
   }
 
+  .scrollbar-hide::-webkit-scrollbar {
+    display: none;
+  }
+
   .animate-float { animation: float 6s ease-in-out infinite; }
   .animate-float-slow { animation: float-slow 8s ease-in-out infinite; }
   .animate-shimmer { 
@@ -134,6 +138,17 @@ export default function ArcigaCleaning() {
   const [activeAccordion, setActiveAccordion] = useState(null);
   const [isVisible, setIsVisible] = useState({});
   const [formStatus, setFormStatus] = useState('idle'); // idle, submitting, success, error
+  const servicesRef = useRef(null);
+
+  const scrollServices = (direction) => {
+    if (servicesRef.current) {
+      const scrollAmount = 320;
+      servicesRef.current.scrollBy({
+        left: direction === 'left' ? -scrollAmount : scrollAmount,
+        behavior: 'smooth'
+      });
+    }
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -296,22 +311,46 @@ export default function ArcigaCleaning() {
             <h2 className="font-serif text-4xl md:text-5xl text-gray-800 mt-4">Services Tailored to You</h2>
             <p className="text-gray-600 mt-4 max-w-xl mx-auto">From quick touch-ups to deep transformations, we've got your home covered.</p>
           </div>
-          
-          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
-            {services.map((service, i) => (
-              <div 
-                key={i}
-                className={`hover-lift bg-gradient-to-br from-white to-gray-50 p-8 rounded-2xl border border-gray-100 group cursor-pointer ${isVisible.services ? 'animate-slide-up' : 'opacity-0'}`}
-                style={{ animationDelay: `${i * 0.1}s` }}
-              >
-                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-teal-500 to-teal-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-lg shadow-teal-500/25">
-                  <service.icon className="w-7 h-7 text-white" />
+
+          <div className="relative">
+            <div
+              ref={servicesRef}
+              className="flex gap-6 overflow-x-auto pb-4 scrollbar-hide snap-x snap-mandatory"
+              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            >
+              {services.map((service, i) => (
+                <div
+                  key={i}
+                  className={`hover-lift flex-shrink-0 w-[280px] bg-gradient-to-br from-white to-gray-50 p-8 rounded-2xl border border-gray-100 group cursor-pointer snap-start ${isVisible.services ? 'animate-slide-up' : 'opacity-0'}`}
+                  style={{ animationDelay: `${i * 0.1}s` }}
+                >
+                  <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-teal-500 to-teal-600 flex items-center justify-center mb-6 group-hover:scale-110 transition-transform shadow-lg shadow-teal-500/25">
+                    <service.icon className="w-7 h-7 text-white" />
+                  </div>
+                  <h3 className="font-serif text-xl text-gray-800 mb-3">{service.title}</h3>
+                  <p className="text-gray-600 text-sm mb-4 leading-relaxed">{service.desc}</p>
+                  <span className="text-orange-500 font-semibold">{service.price}</span>
                 </div>
-                <h3 className="font-serif text-xl text-gray-800 mb-3">{service.title}</h3>
-                <p className="text-gray-600 text-sm mb-4 leading-relaxed">{service.desc}</p>
-                <span className="text-orange-500 font-semibold">{service.price}</span>
-              </div>
-            ))}
+              ))}
+            </div>
+
+            {/* Navigation Arrows */}
+            <div className="flex justify-center gap-4 mt-8">
+              <button
+                onClick={() => scrollServices('left')}
+                className="w-12 h-12 rounded-full bg-white border-2 border-gray-200 flex items-center justify-center hover:border-teal-500 hover:bg-teal-50 transition-all shadow-lg"
+                aria-label="Scroll left"
+              >
+                <ChevronLeft className="w-6 h-6 text-gray-600" />
+              </button>
+              <button
+                onClick={() => scrollServices('right')}
+                className="w-12 h-12 rounded-full bg-white border-2 border-gray-200 flex items-center justify-center hover:border-teal-500 hover:bg-teal-50 transition-all shadow-lg"
+                aria-label="Scroll right"
+              >
+                <ChevronRight className="w-6 h-6 text-gray-600" />
+              </button>
+            </div>
           </div>
         </div>
       </section>
